@@ -28,22 +28,27 @@ void reset_board(char (*board)[BOARD_SIZE]) {
 
 void print_board(char (*board)[BOARD_SIZE]) {
     // Print heading
-    printf("  0 1 2\n");
+    printf("   0   1   2\n");
     for (int i = 0; i < BOARD_SIZE; i++) {
+        // Print horizontal separator
+        if (i > 0) {
+            printf("  -+-+-+-+-+-\n");
+        }
         printf("%i ", i);
 
         for (int j = 0; j < BOARD_SIZE; j++) {
-            char c = board[i][j];
-            if (c == '\0') {
-                printf(" ");
-            } else {
-                printf("%c", c);
-            }
-
             // Print separator only if it is not the last cell on the row
-            if (j != BOARD_SIZE - 1) {
+            if (j > 0) {
                 printf("|");
             }
+
+            char c = board[i][j];
+            if (c == '\0') {
+                printf("   ");
+            } else {
+                printf(" %c ", c);
+            }
+
         }
         printf("\n");
     }
