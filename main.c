@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define BOARD_SIZE 3
 
+int get_int(char *prompt, int min, int max);
 void print_board(char (*board)[BOARD_SIZE]);
 void reset_board(char (*board)[BOARD_SIZE]);
 
@@ -11,6 +14,8 @@ int main(void) {
     reset_board(board);
 
     print_board(board);
+
+    printf("%i", get_int("X: ", 0, 2));
 }
 
 void reset_board(char (*board)[BOARD_SIZE]) {
@@ -42,4 +47,27 @@ void print_board(char (*board)[BOARD_SIZE]) {
         }
         printf("\n");
     }
+}
+
+int get_int(char *prompt, int min, int max) {
+    // Buffer to read int
+    char input[10];
+    char *temp;
+    int n;
+
+    do {
+        printf("%s", prompt);
+        // Get input
+        fgets(input, sizeof(input), stdin);
+
+        // Remove newline at end
+        input[strcspn(input, "\n")] = 0;
+
+        // Convert to int
+        n = strtol(input, &temp, 10);
+    }
+    // Check input is valid
+    while (*temp != '\0' || n < min || n > max);
+
+    return n;
 }
