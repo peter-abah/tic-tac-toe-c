@@ -4,6 +4,12 @@
 
 #define BOARD_SIZE 3
 
+typedef struct {
+    int x;
+    int y;
+} position;
+
+position *get_input_pos(char (*board)[BOARD_SIZE]);
 int get_int(char *prompt, int min, int max);
 void print_board(char (*board)[BOARD_SIZE]);
 void reset_board(char (*board)[BOARD_SIZE]);
@@ -14,9 +20,11 @@ int main(void) {
     reset_board(board);
 
     print_board(board);
-
-    printf("%i", get_int("X: ", 0, 2));
+    position *pos = get_input_pos(board);
+    printf("%i %i\n", pos->x, pos->y);
+    free(pos);
 }
+
 
 void reset_board(char (*board)[BOARD_SIZE]) {
     for (int i = 0; i < BOARD_SIZE; i++) {
@@ -54,6 +62,17 @@ void print_board(char (*board)[BOARD_SIZE]) {
     }
 }
 
+position *get_input_pos(char (*board)[BOARD_SIZE]) {
+    position *pos = malloc(sizeof(position));
+
+    do {
+        pos->x = get_int("X: ", 0, BOARD_SIZE - 1);
+        pos->y = get_int("Y: ", 0, BOARD_SIZE - 1);
+    } while (board[pos->y][pos->x] != '\0');
+
+    return pos;
+}
+
 int get_int(char *prompt, int min, int max) {
     // Buffer to read int
     char input[10];
@@ -76,3 +95,4 @@ int get_int(char *prompt, int min, int max) {
 
     return n;
 }
+
